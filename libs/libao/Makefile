@@ -20,17 +20,33 @@ PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/libao
+define Package/libao/Default
   SECTION:=libs
-  DEPENDS:=+alsa-lib
   CATEGORY:=Libraries
   TITLE:=A cross platform audio library
   URL:=http://www.xiph.org/ao/
 endef
 
+define Package/libao
+  $(call Package/libao/Default)
+  DEPENDS:=+alsa-lib
+  VARIANT:=nopulseaudio
+endef
+
+define Package/libao-pulse
+  $(call Package/libao/Default)
+  DEPENDS:=+libao +(!PACKAGE_libpulse-dbus):libpulse
+  TITLE+= (pulseaudio plugin)
+  VARIANT:=pulseaudio
+endef
+
 define Package/libao/description
 	Libao is a cross-platform audio library that allows programs to
 	output audio using a simple API on a wide variety of platforms.
+endef
+
+define Package/libao-pulse/description
+	libao plugin for pulseaudio
 endef
 
 CONFIGURE_ARGS += \
@@ -39,7 +55,14 @@ CONFIGURE_ARGS += \
 	--disable-esd \
 	--disable-arts \
 	--disable-nas \
+
+ifeq (${BUILD_VARIANT},pulseaudio)
+CONFIGURE_ARGS += \
 	--disable-pulse
+else
+CONFIGURE_ARGS += \
+	--enable-pulse
+endif
 
 TARGET_CFLAGS += $(FPIC)
 
@@ -59,4 +82,10 @@ define Package/libao/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/ao/plugins-4/lib*.so $(1)/usr/lib/ao/plugins-4/
 endef
 
+define Package/libao-pulse/install
+	$(INSTALL_DIR) $(1)/usr/lib/ao/plugins-4
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/ao/plugins-4/libpulse.so $(1)/usr/lib/ao/plugins-4/
+endef
+
 $(eval $(call BuildPackage,libao))
+$(eval $(call BuildPackage,libao-pulse))

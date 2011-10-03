@@ -1,0 +1,5 @@
+#!/bin/bash
+
+[ -f /etc/pywebshellfm.conf ] && . /etc/pywebshellfm.conf
+cd /usr/share/pywebshellfm
+exec python index.py ${HOST:-0.0.0.0}:${PORT:-8080} "$@"

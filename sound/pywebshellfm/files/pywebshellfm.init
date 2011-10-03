@@ -1,0 +1,17 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2011 OpenWrt.org
+
+NAME=pywebshellfm
+SSD=start-stop-daemon
+PIDF=/var/run/$NAME.pid
+PROG=/usr/bin/$NAME
+ARGS=
+
+START=99
+start() {
+	$SSD -S -p $PIDF -q -b -m -x $PROG -- $ARGS
+}
+
+stop() {
+	$SSD -K -p $PIDF -q
+}
