@@ -23,7 +23,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/shell-fm
   SECTION:=sound
   CATEGORY:=Sound
-  DEPENDS:=+libao +madplay +libpthread
+  DEPENDS:=+libao +libpthread
   TITLE:=Console Based Last.FM Radio Player
   URL:=http://nex.scrapping.cc
 endef
