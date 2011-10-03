@@ -43,7 +43,7 @@ endef
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS) -I./include/ $(TARGET_CPPFLAGS)" \
+		CFLAGS="$(TARGET_CFLAGS) -I./include/ -DLIBAO $(TARGET_CPPFLAGS)" \
 		DESTDIR="$(PKG_INSTALL_DIR)" \
 		LDFLAGS="$(TARGET_LDFLAGS) -lmad -lao -lpthread" \
 		all install
