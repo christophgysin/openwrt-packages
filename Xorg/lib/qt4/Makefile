@@ -300,6 +300,9 @@ define Build/Configure
 		TARGET_LDFLAGS="$(TARGET_LDFLAGS) $(EXTRA_LDFLAGS)" \
 		TARGET_INCDIRS="$(TARGET_INCDIRS)" \
 		TARGET_LIBDIRS="$(TARGET_LIBDIRS)" \
+		CFLAGS= \
+		CXXFLAGS= \
+		LDFLAGS= \
 		STAGING_DIR="$(STAGING_DIR)" \
 		STAGING_DIR_HOST="$(STAGING_DIR)/../host" \
 		./configure \
@@ -314,6 +317,7 @@ define Build/Configure
 			-sysconfdir /etc/Qt \
 			-no-rpath \
 			-force-pkg-config \
+			-continue \
 			-nomake tools \
 			$(if $(CONFIG_PACKAGE_qt4-demos),-make,-nomake) demos \
 			$(if $(CONFIG_PACKAGE_qt4-examples),-make,-nomake) examples \
@@ -380,7 +384,7 @@ define Build/Configure
 			$(if $(CONFIG_PACKAGE_qt4-drivers-gfx-vnc),-plugin-gfx-vnc,-no-gfx-vnc) \
 			-no-gfx-multiscreen \
 			-no-gfx-qnx \
-			$(if $(CONFIG_PACKAGE_directfb),-plugin-gfx-directfb) \
+			$(if $(CONFIG_FEATURE_drawing-backend_DirectFB),$(if $(CONFIG_PACKAGE_directfb),-plugin-gfx-directfb)) \
 			-plugin-gfx-linuxfb \
 			-no-mouse-qvfb \
 			-no-mouse-qnx \

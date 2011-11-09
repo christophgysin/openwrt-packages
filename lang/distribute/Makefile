@@ -13,8 +13,10 @@ PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://pypi.python.org/packages/source/d/$(PKG_NAME)/
-PKG_MD5SUM:=c8cfcfd42ec9ab900fb3960a3308eef2
+PKG_MD5SUM:=f783444754861f9b33e9f4083bd97b60
 PKG_BUILD_DIR:=$(BUILD_DIR_HOST)/$(PKG_NAME)-$(PKG_VERSION)/
+
+HOST_BUILD_DEPENDS:=python
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
@@ -41,10 +43,10 @@ define Host/Compile
 endef
 
 define Host/Install
-	$(INSTALL_DIR) $(STAGING_DIR_HOST)$(PYTHON_PKG_DIR)
+	$(INSTALL_DIR) $(STAGING_DIR)$(PYTHON_PKG_DIR)
 	$(CP) \
 	    $(PKG_INSTALL_DIR)$(PYTHON_PKG_DIR)/* \
-	    $(STAGING_DIR_HOST)$(PYTHON_PKG_DIR)
+	    $(STAGING_DIR)$(PYTHON_PKG_DIR)/
 endef
 
 define Build/Compile
@@ -55,7 +57,7 @@ define Package/distribute/install
 	$(INSTALL_DIR) $(1)$(PYTHON_PKG_DIR)
 	$(CP) \
 	    $(PKG_INSTALL_DIR)$(PYTHON_PKG_DIR)/* \
-	    $(1)$(PYTHON_PKG_DIR)
+	    $(1)$(PYTHON_PKG_DIR)/
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) \
 	    $(PKG_INSTALL_DIR)/usr/bin/easy_install \

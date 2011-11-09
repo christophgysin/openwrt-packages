@@ -8,15 +8,16 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=netatalk
-PKG_VERSION:=2.1.5
-PKG_RELEASE:=1
+PKG_VERSION:=2.2.1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=@SF/netatalk
-PKG_MD5SUM:=2495f832643cef131bc3032274fbf926
+PKG_MD5SUM:=4a371025daf96adb73fa491efdbfef28
 
 PKG_BUILD_PARALLEL:=1
 PKG_INSTALL:=1
+PKG_FIXUP:=autoreconf
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -40,12 +41,8 @@ define Package/netatalk/conffiles
 /etc/netatalk/afpd.conf
 endef
 
-EXTRA_CFLAGS += -I$(STAGING_DIR)/usr/include
-TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
+TARGET_CFLAGS += -std=gnu99 -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 TARGET_LDFLAGS += $(LIBRPC)
-
-CONFIGURE_VARS += \
-	CFLAGS="$(TARGET_CFLAGS) -std=gnu99 -DNO_DEBUG "
 
 CONFIGURE_ARGS += \
 	--disable-afs \
@@ -62,7 +59,10 @@ CONFIGURE_ARGS += \
 	--with-ssl-dir="$(STAGING_DIR)/usr" \
 	--with-uams-path="/usr/lib/uams" \
 	--disable-admin-group \
-	--disable-srvloc
+	--disable-srvloc \
+	--disable-zeroconf \
+	--without-shadow \
+	--without-ldap
 
 define Package/netatalk/install
 	$(INSTALL_DIR) $(1)/usr/bin

@@ -10,15 +10,16 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=batman-adv
 
-PKG_VERSION:=2011.3.0
-PKG_MD5SUM:=0ba4b63f7fe9d2a561662cdc0378caa5
+PKG_VERSION:=2011.3.1
+BATCTL_VERSION:=2011.3.0
+PKG_MD5SUM:=54a5caff56a8380f3070111ce84bbfc4
 BATCTL_MD5SUM:=8eb197896049bb04a6beef56015a16b6
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://downloads.open-mesh.org/batman/releases/batman-adv-$(PKG_VERSION)
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)/$(PKG_NAME)-$(PKG_VERSION)
-PKG_TOOL_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)/batctl-$(PKG_VERSION)
+PKG_BATCTL_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)/batctl-$(BATCTL_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/kernel.mk
@@ -27,7 +28,7 @@ define KernelPackage/batman-adv
   URL:=http://www.open-mesh.org/
   MAINTAINER:=Marek Lindner <lindner_marek@yahoo.de>
   SUBMENU:=Network Support
-  DEPENDS:=@!LINUX_2_4 +kmod-crc16
+  DEPENDS:=@!LINUX_2_4 +kmod-lib-crc16
   TITLE:=B.A.T.M.A.N. Adv
   FILES:=$(PKG_BUILD_DIR)/batman-adv.$(LINUX_KMOD_SUFFIX)
   AUTOLOAD:=$(call AutoLoad,50,batman-adv)
@@ -67,15 +68,15 @@ MAKE_BATCTL_ARGS += \
 
 ifneq ($(DEVELOPER)$(CONFIG_KMOD_BATMAN_ADV_BATCTL),)
 define Download/batctl
-  FILE:=batctl-$(PKG_VERSION).tar.gz
+  FILE:=batctl-$(BATCTL_VERSION).tar.gz
   URL:=$(PKG_SOURCE_URL)
   MD5SUM:=$(BATCTL_MD5SUM)
 endef
 $(eval $(call Download,batctl))
 
-EXTRACT_BATCTL = tar xzf "$(DL_DIR)/batctl-$(PKG_VERSION).tar.gz" -C "$(BUILD_DIR)/$(PKG_NAME)"
+EXTRACT_BATCTL = tar xzf "$(DL_DIR)/batctl-$(BATCTL_VERSION).tar.gz" -C "$(BUILD_DIR)/$(PKG_NAME)"
 PATCH_BATCTL = $(call Build/DoPatch,"$(PKG_BATCTL_BUILD_DIR)","$(PATCH_DIR)","*batctl*")
-BUILD_BATCTL = $(MAKE) -C $(PKG_TOOL_BUILD_DIR) $(MAKE_BATCTL_ARGS)
+BUILD_BATCTL = $(MAKE) -C $(PKG_BATCTL_BUILD_DIR) $(MAKE_BATCTL_ARGS)
 endif
 
 KPATCH ?= $(PATCH)
