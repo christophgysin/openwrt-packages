@@ -8,9 +8,9 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pywebshellfm
-PKG_REV:=63a7e0ac6263146d350cf054e251a8a62a98c40b
+PKG_REV:=8658608e25a4f8deafbcdc657c7b033708c6bac8
 PKG_VERSION:=0.1
-PKG_RELEASE:=2
+PKG_RELEASE:=1
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git://github.com/christophgysin/PyWebShellFM.git
