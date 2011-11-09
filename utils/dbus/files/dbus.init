@@ -13,6 +13,10 @@ start() {
 		/usr/bin/dbus-uuidgen --ensure
 	fi
 
+	if [ -e $PIDF ]; then
+		kill -0 $(cat $PIDF) 2>/dev/null || rm $PIDF
+	fi
+
 	mkdir -p /var/run/dbus
 	$SSD -S -p $PIDF -q -x $PROG -- $ARGS
 }
