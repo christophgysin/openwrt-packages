@@ -21,7 +21,7 @@ define Package/python-webpy
   SECTION:=language-python
   CATEGORY:=Languages
   SUBMENU:=Python
-  TITLE:=python-webpy
+  TITLE:=web.py web application framework
   URL:=http://webpy.org/
   DEPENDS:=+python
 endef
